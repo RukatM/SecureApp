@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="button-container">
+        <h2>Welcome, {{ user.username }}!</h2>
+        <a href="{% url 'add_message' %}" class="button">Add Message</a>
+        <a href="{% url 'logout' %}" class="button">Logout</a>
+    </div>
+    <h3>Message List</h3>
+    <ul>
+        {% for message in messages %}
+            <li>
+                <p><strong>{{ message.user.username }}</strong>: {{ message.content }}</p>
+                <p><small>Created at: {{ message.created_at }}</small></p>
+                <p>
+                    Signature Status: 
+                    {% if message.is_valid %}
+                        <span style="color: green;">Valid</span>
+                    {% else %}
+                        <span style="color: red;">Invalid</span>
+                    {% endif %}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

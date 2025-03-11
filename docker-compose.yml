@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:14
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: secure_space_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "5432:5432"  
+    logging:
+     options:
+        max-size: "10m"
+        max-file: "3"
+
+  secure_app:
+    build:
+      context: ./secure_app
+    container_name: secure_app
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./secure_app:/app
+      - ./secure_app/static:/staticfiles
+      - ./secure_app/staticfiles:/staticfiles
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - db
+    
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./secure_app/staticfiles:/staticfiles
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - secure_app
+
+volumes:
+  db_data:

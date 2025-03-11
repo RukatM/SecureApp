@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Registration Successful{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Registration Successful</h2>
+    <p>Scan the QR code below with Authenticator App:</p>
+    <div class="qr-code-container">
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    </div>
+    <a href="{% url 'login' %}" class="button">Login</a>
+</div>
+{% endblock %}

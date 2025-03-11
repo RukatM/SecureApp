@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome to Secure App</h1>
+    <p>Choose an option below:</p>
+    <div class="button-container">
+        <a href="{% url 'register' %}" class="button">Register</a>
+        <a href="{% url 'login' %}" class="button">Login</a>
+        <a href="{% url 'password_reset_request' %}" class="button">Reset Password</a>
+    </div>
+</div>
+{% endblock %}
